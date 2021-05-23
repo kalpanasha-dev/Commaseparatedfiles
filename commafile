@@ -1,0 +1,39 @@
+‘ Create a CSV (Comma-separated values) file  
+Option Explicit 
+Dim objFSO, InitFSO, objFSO2 
+Dim objExcel, objWorkbook, objWorksheet, row, col, msg, ThisTxt, ThisLen, i, j Dim wksheetno, wkbkname, intLimit, ColIDs, IDIdx, strExtra 
+Dim objTextFile, OpLine 
+Const ForReading = 1 
+Const ForWriting = 2 
+Const ForAppending = 8 
+Set ObjFSO = CreateObject("UserAccounts.CommonDialog") 
+ObjFSO.Filter = "Excel files|*.xls"  
+InitFSO = ObjFSO.ShowOpen 
+If InitFSO = False Then 
+ Wscript.Echo "You did not select a file!" 
+ Wscript.Quit 
+Else 
+ wkbkname = ObjFSO.Filename 
+End If 
+' Open the CSV file 
+Set ObjFSO2 = CreateObject("Scripting.FileSystemObject") 
+Set objTextFile = objFSO2.OpenTextFile _ 
+ ("MyCSVFile.txt", ForWriting, True) 
+' Start the application 
+Set objExcel = CreateObject("Excel.Application") 
+'objExcel.Application.visible = true ' make Excel visible 
+Set objWorkbook = objExcel.Workbooks.Open(wkbkname)  
+If objWorkbook.sheets.count > 1 then 
+ wkSheetno = cInt(inputbox("Enter the worksheet number you wish to work with",WScript.scriptname &  " needs some input from you!","1")) 
+else  
+ wkSheetNo = 1 
+end if  
+intLimit = objWorkbook.sheets.count 
+strExtra = "" 
+If intLimit > 10 then  
+ intLimit = 10 
+ strExtra = "first ten" 
+end if  
+Msg = "Workbook Name: " & objWorkbook.Name & vbcrlf 
+  
+If wksheetno > objWorkbook.sheets.count then
